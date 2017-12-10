@@ -1,0 +1,90 @@
+#header{
+    display: flex;
+    border-bottom: 2px dashed #888;
+    justify-content: space-between;
+    margin-bottom:60px;
+}
+#header h1 {
+    margin:5px;
+    color:darkcyan;
+}
+
+body {
+    max-width:90%;
+    text-align:justify;
+}
+
+#main-block {
+    margin:auto;
+    padding-right:30%;
+}
+#content h1 {
+    margin-left:-30px; }
+#content h2 {
+    margin-left:-22px; }
+#content h3 {
+    margin-left:-16px; }
+#content h4 {
+    margin-left:-12px; }
+#content h5 {
+    margin-left:-8px; }
+
+#nav-menu {
+    padding-top:30%;
+    text-align:right;
+    padding-right:70px;
+}
+
+#nav-menu li {
+    margin-top:30px;
+    color:black;
+}
+
+#nav-menu li span{
+    font-weight:bolder;
+    color:#f9f9f9;
+}
+#nav-menu li.selected span{
+    color:darkcyan;
+}
+#nav-menu li.subitem{
+    margin:10px 0;
+    color:black;
+    font-size: 90%;
+    padding-right: 10px;
+}
+#nav-menu li.subitem span{
+    font-weight:bolder;
+    color:#f9f9f9;
+}
+#nav-menu li.subitem.selected span{
+    color:lightblue;
+}
+
+#nav-menu a {
+    color:black;
+}
+
+#nav-menu a:hover {
+    color:black;
+    border-bottom: 1px solid darkcyan;
+}
+#nav-menu .subitem a:hover {
+    color:black;
+    border-bottom: 1px solid lightblue;
+}
+div#footer {
+    color: gray;
+    text-align: center;
+    font-size: small;
+}
+div#footer a {
+    color: gray;
+    text-decoration: none;
+}
+pre {
+    border: dotted black 1px;
+    background: #eeeeec;
+    font-size: small;
+    padding: 1em;
+}

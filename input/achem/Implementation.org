@@ -1,0 +1,258 @@
+#+OPTIONS: ^:{}
+#+OPTIONS: toc:nil  
+
+
+title: ACHEM
+menu-position: 2
+type:subpage
+subtitle:implementation
+@@html:---@@
+
+
+
+* Implémentation
+
+** But
+
+   Le but est d'avoir un modèle unifié de molécules, qui permettent à 
+   la fois d'avoir des molécules qui :
+     - représentent de l'information (ADN)
+     - puissent agir sur d'autres molécules (protéines, enzymes), et 
+       plus précisement 
+        + Découper une molécule
+        + Insérer une molécule dans une autre
+        + Lire de l'information écrite sur une molécule
+     - puissent échanger de l'information (métabolites)
+   
+   Enfin en vrai le but c'est de faire des *RIBOSOMES*, 
+   ne l'oublions pas.
+
+   Et aussi des membranes, élément essentiel de toute bactérie qui se respecte.
+   
+** Détails de l'implémentation
+   
+*** Atomes et Molécules
+    
+    Les éléments de bases sont des atomes (ensemble fini).
+    Pour l'instant, les atomes sont au nombres de 6 : A,B,C,D,E,F
+    Les atomes se combinent linéairement pour former des molécules.
+
+    Autrement dit, une molécule est une chaine contenant les caractères A-F.
+
+*** Acides et Protéines
+
+    Une molécule est parsée linéairement, pour produire une liste d'acides,
+    c'est à dire une protéine.
+
+    Il y a quatre types d'acides :
+     + Place :
+       correspond à une place d'un réseau de pétri
+
+     + Input_arc :
+       correspond à un arc entrant d'une transition.
+       Il y a trois types d'Input_arc :
+       - Regular_iarc (tid) :
+	 pas d'effet particulier
+       - Split_iarc (tid) :
+	 sépare en deux les tokens qui passent par l'arc
+         ( en découpant aussi la molécule éventuellement présente )
+       - Filter_iarc (filter_pattern, tid) : 
+	 Ne laisse passer que les token dont la position courante 
+	 de la molécule contenue correspond au filter_pattern
+
+     + Output_arc :
+       correspond à un arc sortant d'une transition.
+       Il y a trois types d'Output_arc :
+       - Regular_oarc (tid) :
+	 pas d'effet particulier
+       - Move_oarc (tid, move)
+	 déplace la molécule contenue dans le token suivant move
+       - Bind_oarc (tid)
+	 Fusionne deux tokens (et les molécules qu'ils contiennent)
+       
+     + Extension :
+       Ajoute des fonctionnalités à une place
+       - Bind_ext (binder) :
+	 Ajoute un binder 
+       - Grab_ext (graber) :
+	 ajoute un graber
+       - Init_with_token_ext :
+	 la place est initialisée avec un token (vide)
+       - Release_ext
+	 les tokens qui arrivent depuis une transition sont relachés
+	 à l'extérieur
+
+    Les types d'acides correspondent à une courte chaîne de caractères
+    (deux ou trois). Quand l'acide a besoin de plus d'information, 
+    l'information est encodée par la chaîne qui suit l'acide, terminée 
+    par un marqueur de fin (deux ou trois caractères, commun à tous 
+    les acides).
+     
+*** Construction d'un réseau de pétri
+
+   Pour construire le réseau de pétri associé à une protéine,
+   la protéine est lue séquentiellement : 
+   
+   1. Tous les acides qui précèdent le premier acide Place
+      sont ignorés
+   2. À chaque acide Place rencontrée, une nouvelle Place du 
+      réseau est construite.
+      Tant qu'une autre Place n'est pas rencontrée, les acides
+      qui suivent seront liés à la place.
+
+      Pour simplifier les réactions, seul le premier Bind
+      et le premier Grab seront pris en compte par une place.
+      
+
+
+***** TODO Un *PROBLÈME*:
+
+       Que se passe-t-il si plusieurs transtions input avec la même id 
+       partent d'un même nœud, en particulier 
+       pour la gestion des token ?
+       Plusieurs pistes :
+        - la transition n'est pas crée
+        - seul un des arcs est pris en compte
+        - utiliser un des arcs au hasard
+        - le programme bugge
+
+*** Fonctionnement d'un réseau de pétri
+
+   Le modéle est inspiré des modèles existants, avec 
+   certaines spécificités. On a un graphe avec deux types
+   de nœuds : 
+    + Des Places :
+      - Peuvent contenir au plus un Token.
+      - Interagissent avec l'extérieur.
+    + Des Transitions :
+      - font passer les Tokens d'une place à l'autre,
+	en appliquant des effets particuliers.
+
+    Des arcs entrants vont des places aux transitions, 
+    et des arcs sortants vont des transitions aux places.
+
+    Les Tokens peuvent éventuellement contenir 
+    une molécule, ainsi qu'un pointeur vers 
+    un acide particulier (ou à la fin de la 
+    molécule).
+
+**** Fonctionnement des transitions :
+    
+   Une transition sera déclenchable si toutes les places avec des arcs
+   entrants contiennent un token, et toutes les places d'arrivée 
+   sont vides.
+   
+   Quand une transition est déclenchée :
+   1. Les arcs entrants sont parcourus séquentiellement (dans l'ordre 
+      dans lequel ils apparaissent dans la protéine). Une liste de tokens 
+      est alors générée, qui correspond aux tokens des places de départ 
+      après modification par les arcs entrants.
+   2. La liste de token est parcourue, et les tokens répartis 
+      dans les arcs sortants (un token par arc, sauf pour les bind).
+   3. Si le nombre de Token est supérieur au nombre d'arcs sortants,
+      les Tokens restants sont relachés à l'extérieur
+      (avec éventuellement des effets supplémentaires à l'avenir).
+
+   En particulier, l'ordre dans lequels les places apparaissent dans 
+   la molécule a une influence sur le fonctionnement du réseau de pétri.
+
+*** Réseaux de pétri étendus
+
+Les réactions de type Bind lient deux réseaux de pétri entre eux.
+Cette opération peut-être réalisée à volonté, pour former 
+des graphes arbitraires de réseaux de pétri.
+
+*** Réactions
+
+   Une réaction est susceptible de se produire lorsque deux 
+   molécules se rencontrent. Il y a pour l'instant deux types 
+   de réactions implémentées :
+   Grab et Bind
+  
+   Le renvoi d'une molécule à l'extérieur peut aussi être vu
+   comme un type de réaction.
+ 
+**** Grab
+    
+    Une place dotée d'une extension Grab sera capable d'attraper
+    des molécules particulières, qui seront alors placées 
+    à l'intérieur d'un Token.
+
+    Un acide de type Grab contient un chaîne de caractères,
+    qui est parsée pour générer une expression régulière 
+    (restreinte).
+    Les molécules qui sont matchées par l'expression régulière
+    pourront être grabés (attrapées).
+    
+    Un grab ne peut se produire que si la place n'a pas de Token.
+
+**** TODO Bind
+
+    Une extension de type bind possède un bind_pattern 
+    (une chaîne de caractère). 
+    Deux Places avec Bind de réseaux de pétri différent pourront
+    se binder (s'attacher) si les chaînes de caractères 
+    sont le symétrique l'une de l'autre (reverse),
+    et que les deux places n'ont pas de Token.
+
+    Lorsqu'un Bind se produit, un token est créé dans les
+    deux places impliquées.
+
+    Dès que les deux places reçoivent à nouveau un token,
+    les places se séparent (unbind).
+
+    --> Mais donc  :
+      - soit la phase de réactions se produit avant 
+	la phase de déclenchment de transitions.
+	Si les tokens sont toujours là après le déclenchement,
+	on sépare
+      - soit il faut faire plus attention, c'est compliqué
+    
+*** Réacteur et Simulation
+    
+    Le réacteur contient toutes les molécules, et gère les rencontres 
+    et la simulation. 
+    Le réacteur doit accomplir deux objectifs concurrents :
+     - être « réaliste »
+     - être efficace
+   
+**** TODO Molécules et réseaux de pétri
+     
+     Dans le réacteur se trouvent un certain nombre de molécules 
+     différentes, chacune ayant une quantité propre.
+
+     Afin d'être efficace, un unique réseau de pétri est créé
+     par type de molécule (pour plus de réalisme, on pourrait 
+     aller vers un nombre logarithmique).
+     
+     Deux choix :
+      + calculer la quantité de réactions entre deux molécules
+	en fonction de la quantité de chacune des molécules
+      + creuser du coté de 
+	Generalized Stochastic simulation algorithm for Artificial Chemistry,
+	H. Soula
+	
+     
+
+**** TODO Rencontres
+
+     Tant qu'on n'étends pas les réseaux de pétri, c'est assez simple.
+     Mais ensuite, il y a plusieurs choses à gérer:
+      + Rencontre entre deux réseaux étendus :
+	le problème, c'est qu'il peut y avoir beaucoup (BEAUCOUP) de bind
+	possibles. 
+	Pour régler ça, on pourrait faire en sorte de ne faire de réactions
+	qu'entre deux réseaux de pétri; donc quand deux réseaux étendus
+	se recontrent, on détermine le lieu (réseau de pétri pour chacun)
+	de leur rencontre.
+     
+      + Rencontres à l'intérieur d'un réseau étendu.
+	Il faut faire en sorte :
+	- que deux pnets très proches puissent réagir
+	- que deux pnets lointains puissent réagir
+	- sinon, pas de réaction
+
+     Ou alors, dans le contexte du papier de Soula, 
+     donner les bons taux de réaction.
+
+      

@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset={{ __encoding__ }}" />
+    <title>milim - {{ hx(page["title"]) }}</title>
+    <meta name="description" content="{{ hx(page.get("description", "a poole site")) }}" />
+    <meta name="keywords" content="{{ hx(page.get("keywords", "poole")) }}" />
+    
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="sakura.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+</head>
+<body>
+  {{ page.keys() }}
+  <div class="pure-g">
+    
+    <div class="pure-u-1-5">
+      
+      <div class="pure-menu" id="nav-menu">
+	<ul class="pure-menu-list">
+<!--%
+mpages = [p for p in pages if p.get("type") == "page"]
+mpages.sort(key=lambda p: int(p["menu-position"]))
+entry = '<li class="%s"><a href="%s">%s</a><span><</span></li>'
+
+for p in mpages:
+  style = "pure-menu-item"
+  title = hx(p["title"])
+  if p["title"] == page["title"]:
+    style += " selected"
+  print(entry % (style, p["url"], title))	       
+
+  if p["title"] == page["title"]:
+    subpages = [sp for sp in pages if sp.get("title") == p["title"] and sp["type"] == "subpage"] 
+    subpages.sort(key=lambda p: int(p["menu-position"]))
+    if len(subpages) > 0:
+      print("<ul class='pure-menu-list'>")
+      for sp in subpages:
+	substyle = "pure-menu-item subitem"
+        subtitle = hx(sp["subtitle"])
+        if sp["subtitle"] == page.get("subtitle"):
+	  substyle += " selected"
+        print(entry % (substyle, sp["url"], subtitle))
+      print("</ul>")
+     %-->
+	</ul>
+      </div>
+
+    </div>
+
+    
+    <div class="pure-u-4-5">
+      <div id="main-block">
+      
+	<div id="header">
+	  <div><h1>{{ hx(page["title"]) }}</h1></div>
+	  <div><h1>milim</h1></div> 
+	</div>
+      
+      <div id="content">{{ __content__ }}</div>
+      </div>
+    </div>
+
+    
+    <div class="pure-u-1">
+      <div id="footer">
+        Built with <a href="http://bitbucket.org/obensonne/poole">Poole</a>
+        &middot;
+        Licensed as <a href="http://creativecommons.org/licenses/by-sa/3.0">CC-SA</a>
+        &middot;
+        <a href="http://validator.w3.org/check?uri=referer">Validate me</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

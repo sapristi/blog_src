@@ -21,7 +21,6 @@ echo build $build
 echo push $push
 
 if [ $org_build = 1 ]
-    echo "org build :"
     
     cd input/achem
     

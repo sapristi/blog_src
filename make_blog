@@ -1,0 +1,64 @@
+#!/usr/bin/env fish
+
+set org_build 0
+set build 0
+set push 0
+
+for option in $argv
+    switch $option
+        case org
+            set org_build 1
+        case build
+            set build 1
+        case push
+            set push 1
+    end
+end
+
+
+echo org_build $org_build
+echo build $build
+echo push $push
+
+if [ $org_build = 1 ]
+    echo "org build :"
+    
+    cd input/achem
+    
+    for f in (ls | grep '.org$')
+        emacs $f  --load ~/.emacs.d/init.el --batch -f org-md-export-to-markdown
+        echo  "exported " + $f + " as markdown"
+    end
+
+    cd ../..
+end
+
+
+if [ $build = 1 ]
+
+    python2 poole.py --build
+    echo "built website"
+
+end
+
+if [ $push = 1 ]
+    git add -u
+    git commit -m "webiste source"
+    git push
+end
+
+cd ..
+
+if [ $build = 1 ]
+    cp -r ./blog_src/output/* ./sapristi.github.io/
+end
+
+cd sapristi.github.io
+
+
+if [ $push = 1 ]
+    git add -u
+    find . -name '*.html' | xargs git add
+    git commit -m "webiste"
+    git push
+end

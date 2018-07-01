@@ -55,7 +55,7 @@ if [ $build = 1 ]
 
     echo $script_name"building website using poole"
     
-    python2 poole.py --build
+    python2 poole.py --build --md-ext markdown.extensions.fenced_code --md-ext markdown.extensions.codehilite
 
 
 end
@@ -65,6 +65,9 @@ if [ $push = 1 ]
     echo $script_name"push website source files"
     echo 
     git add -u
+    find input -name '*.md' | xargs git add
+    find input -name '*.org' | xargs git add
+    find input/css -name '*.css' | xargs git add
     git commit -m "webiste source"
     git push
 end
@@ -84,6 +87,7 @@ if [ $push = 1 ]
     echo $script_name"push website export files"
     git add -u
     find . -name '*.html' | xargs git add
+    find . -name '*.css' | xargs git add
     git commit -m "webiste"
     git push
 end

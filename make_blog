@@ -4,6 +4,16 @@ set org_build 0
 set build 0
 set push 0
 
+function print_desc
+    printf "usage :\n"
+    printf "\tmake_blog [ org | build | push ]\n\n"
+    printf "options descriptions:\n"
+    printf "\torg : compiles org files to md files\n"
+    printf "\tbuild : builds the blog using poole and copies the file to the blog directory\n"
+    printf "\tpush : push blog sources and compiled files to github\n"
+end
+
+
 for option in $argv
     switch $option
         case org
@@ -15,6 +25,10 @@ for option in $argv
     end
 end
 
+if [ (math $org_build + $build + $push) -eq 0 ]
+    print_desc
+    exit 0
+end
 
 echo org_build $org_build
 echo build $build

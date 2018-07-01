@@ -55,7 +55,7 @@ if [ $build = 1 ]
 
     echo $script_name"building website using poole"
     
-    python2 poole.py --build --base-url ""
+    python2 poole.py --build
 
 
 end

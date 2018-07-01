@@ -4,6 +4,8 @@ set org_build 0
 set build 0
 set push 0
 
+set script_name "[make_blog]"
+
 function print_desc
     printf "usage :\n"
     printf "\tmake_blog [ org | build | push ]\n\n"
@@ -35,6 +37,8 @@ echo build $build
 echo push $push
 
 if [ $org_build = 1 ]
+
+    echo $script_name"compiling org files to markdown"
     
     cd input/achem
     
@@ -49,12 +53,17 @@ end
 
 if [ $build = 1 ]
 
+    echo $script_name"building website using poole"
+    
     python2 poole.py --build --base-url ""
-    echo "built website"
+
 
 end
 
 if [ $push = 1 ]
+    
+    echo $script_name"push website source files"
+    echo 
     git add -u
     git commit -m "webiste source"
     git push
@@ -63,13 +72,16 @@ end
 cd ..
 
 if [ $build = 1 ]
-    cp -r ./blog_src/output/* ./sapristi.github.io/
+    
+    echo $script_name"copying files to export folder"
+    cp -rv ./blog_src/output/* ./sapristi.github.io/
 end
 
 cd sapristi.github.io
 
-
 if [ $push = 1 ]
+    
+    echo $script_name"push website export files"
     git add -u
     find . -name '*.html' | xargs git add
     git commit -m "webiste"

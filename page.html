@@ -67,7 +67,15 @@ for p in mpages:
 
 <!--%
 if page.get("comments") == "on":
-  print('<script src="js/comments-snippet.js"></script>')  
+  print("""
+<script src="https://utteranc.es/client.js"
+        repo="sapristi/sapristi.github.io"
+        issue-term="pathname"
+        crossorigin="anonymous"
+        async>
+</script>
+""")
+
 %-->
     
     <div class="pure-u-1">

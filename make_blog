@@ -55,7 +55,7 @@ if [ $build = 1 ]
 
     echo $script_name"building website using poole"
     
-    python2 poole.py --build --md-ext markdown.extensions.fenced_code --md-ext markdown.extensions.codehilite
+    python2 poole.py --build --md-ext pymdownx.superfences --md-ext markdown.extensions.codehilite
 
 
 end

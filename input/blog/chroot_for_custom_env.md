@@ -31,10 +31,13 @@ This step is highly dependant on the distribution you want to install.
 I advise you to look for ways to install a bootstrap of the distribution of your choice. For example
 
  + debian provides the debootstrap utility
- + archlinux provides bootstrap images that you can decompress in a directory
+ + archlinux provides the pacstrap utility : `# pacstrap /envs/myenv base package1 ... package n`
  + and so on...
 
 I will assume in the rest of this post that an distribution has been installed in the `/envs/myenv` directory of your main OS.
+
+##### Installion of 
+
 
 #### 1.2 Setup schroot
 
@@ -67,22 +70,48 @@ See `man schroot.conf` to describe the provided options.
 
 ##### 1.2.2 desktop-custom directory
 
-We can copy the `desktop` directory in `/etc/schroot/` to `desktop-custom` and modify it according to our needs. This folder contains three files :
+First, create your user directory in the chroot `/home`, then change owner and group so that your user can access and modify it. 
+
+You can then copy the `desktop` directory in `/etc/schroot/` to `desktop-custom` and modify it according to our needs. This folder contains three files :
 
  + `nssdatabases`  that we will not modify.
  + `copyfiles` :
-     - add a line with `/home/me/.Xauthority` to enable shared X session.
-     - add a line with `/etc/localtime` to setup time.
-     - add a line with `/etc/locale.gen` (or `/etc/locale.conf` ?) to setup locale.
-   ```
-   ZERZER
-   ```
- + `fstab` : a custom fstab file. I did some changes to this file :
-     - comment out `/home` to have separate user configuration
-     - add `/home/Documents  /home/Documents none   rw,bind         0       0` where `/home/Documents` is a folder containing configuration and is meant to be shared between envs.
-     - add `/usr/share/fonts /usr/share/fonts none rw,bind          0       0` to share fonts between envs.
-     - add `/usr/share/themes /usr/share/themes none rw,bind          0       0` to share themes between envs.
+    ```
+    # network
+    /etc/resolv.conf
+    
+    # shared X session
+    /home/sapristi/.Xauthority
 
+    # locale
+    /etc/locale.gen
+    /etc/locale.conf
+
+    # time
+    /etc/localtime
+    ```
+ + `fstab` : a custom fstab file. I did some changes to this file :
+     ```
+     /proc           /proc           none    rw,bind         0       0
+     /sys            /sys            none    rw,bind         0       0
+     /dev            /dev            none    rw,bind         0       0
+     /dev/pts        /dev/pts        none    rw,bind         0       0
+     # /home is commented out to keep the same user without sessions poluting each other
+     # /home           /home           none    rw,bind         0       0
+     /tmp            /tmp            none    rw,bind         0       0
+
+     ### shared documents
+     /home/Documents  /home/Documents none   rw,bind         0       0
+     
+     ### fonts & themes
+     /usr/share/fonts /usr/share/fonts none rw,bind          0       0
+     /usr/share/themes /usr/share/themes none rw,bind          0       0
+
+     # If you use gdm3, uncomment this line to allow Xauth to work
+     #/var/run/gdm3  /var/run/gdm3   none    rw,bind         0       0
+     # For PulseAudio and other desktop-related things
+     /var/lib/dbus    /var/lib/dbus  none    rw,bind         0       0
+     ```
 
 #### 1.3 Setup the new environment
 
@@ -95,6 +124,13 @@ For easier access, you can put a script in your path that launches the terminal 
 :::bash
 #!/bin/bash
 
-schroot -c dev -- sh -c "terminator"
+# options for terminator : 
+# -u : no systemd (prevents some warning)
+# -T myenv : sets the title of the terminal so that you can
+# differentiate it from non-chroot terminals 
+schroot -c dev -- sh -c "terminator -u -T myenv"
 ```
 
+It is important to differentiate the terminal launched in the chroot from the one of you main OS. You can either use another terminal emulator, use different color scheme, etc. The same applies to any other program that you could launch in both environments, like emacs.
+
+Depending on you window manager, it might be possible to change the window decorations based on the environments they were launched on, but this is not possible in XFCE. It is possible though to change the GTK theme.

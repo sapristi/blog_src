@@ -2,6 +2,7 @@ title: BLOG
 type : blog
 date : 29-06-2018
 post : chroot for a custom environment
+comments : on
 ---
 
 

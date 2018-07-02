@@ -68,6 +68,7 @@ if [ $push = 1 ]
     find input -name '*.md' | xargs git add
     find input -name '*.org' | xargs git add
     find input/css -name '*.css' | xargs git add
+    find input/js -name '*.js' | xargs git add
     git commit -m "webiste source"
     git push
 end
@@ -88,6 +89,7 @@ if [ $push = 1 ]
     git add -u
     find . -name '*.html' | xargs git add
     find . -name '*.css' | xargs git add
+    find . -name '*.js' | xargs git add
     git commit -m "webiste"
     git push
 end

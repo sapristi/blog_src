@@ -15,22 +15,19 @@ So let's say we want to leave access to `freeuser` open.
 
 
   1. Remove password : `passwd -d freeuser`
-  2. Allow empty password in sshconfig :
+  2. Allow empty password in `/etc/ssh/sshd_config` :
+     ```
+     PermitEmptyPasswords yes
+     ```
+  3. Finally, depending on your distro, you might have to modify pam behaviour.
 
-  ```
-  /etc/ssh/sshd_config
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  ...
-  PermitEmptyPasswords yes
-  ...
-  ```
-  3. Modify pam authentication parameters :
-  ```
-  /etc/pam.d/common-auth
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
-  auth    [success=1 default=ignore]      pam_unix.so nullok
-  ```
+     For example, on debian systems, modify `/etc/pam.d/common-auth` by replacing the line
+     ```
+     auth    [success=1 default=ignore]      pam_unix.so nullok_secure
+     ```
+     by
+     ```
+     auth    [success=1 default=ignore]      pam_unix.so nullok
+     ```
 
 

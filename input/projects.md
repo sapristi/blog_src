@@ -45,3 +45,13 @@ Projet Java visant à implémenter une intelligence artificielle de groupe. Des 
 
 [Sources du projet](https://github.com/sapristi/bocal_java)
 
+
+# 3. Projet Yaacs
+
+Projet d'implémentation d'une chimie artificielle basée sur des réseaux de Pétri étendus.
+
+### Ressources
+
+ * [Sources du projet](https://github.com/sapristi/alife)
+ * [Working demo](http://artlife.ml:51461)
+

@@ -225,22 +225,17 @@ Le réacteur doit accomplir deux objectifs concurrents :
 -   être « réaliste »
 -   être efficace
 
-1.  TODO Molécules et réseaux de pétri
+1.  Molécules et réseaux de pétri
 
     Dans le réacteur se trouvent un certain nombre de molécules 
     différentes, chacune ayant une quantité propre.
     
-    Afin d'être efficace, un unique réseau de pétri est créé
-    par type de molécule (pour plus de réalisme, on pourrait 
-    aller vers un nombre logarithmique).
+    Les réactions sont implémentées suivant le modèle décrit dans le papier
     
-    Deux choix :
+    <https://www.mitpressjournals.org/doi/pdf/10.1162/978-0-262-33936-0-ch094>
     
-    -   calculer la quantité de réactions entre deux molécules
-        en fonction de la quantité de chacune des molécules
-    -   creuser du coté de 
-        Generalized Stochastic simulation algorithm for Artificial Chemistry,
-        H. Soula
+    Generalized Stochastic simulation algorithm for Artificial Chemistry,
+    H. Soula
 
 2.  TODO Rencontres
 

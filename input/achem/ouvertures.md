@@ -1,4 +1,4 @@
-title: ACHEM
+title: YAAC
 menu-position: 3
 type:subpage
 subtitle:ouvertures

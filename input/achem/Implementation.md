@@ -1,4 +1,4 @@
-title: ACHEM
+title: YAAC
 menu-position: 2
 type:subpage
 subtitle:implementation
@@ -232,8 +232,7 @@ Le réacteur doit accomplir deux objectifs concurrents :
     
     Les réactions sont implémentées suivant le modèle décrit dans le papier
     
-    <https://www.mitpressjournals.org/doi/pdf/10.1162/978-0-262-33936-0-ch094>
-    
+    <https://www.mitpressjournals.org/doi/pdf/10.1162/978-0-262-33936-0-ch094>     
     Generalized Stochastic simulation algorithm for Artificial Chemistry,
     H. Soula
 

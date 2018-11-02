@@ -37,14 +37,14 @@ for p in mpages:
     subpages = [sp for sp in pages if sp.get("title") == p["title"] and sp["type"] == "subpage"] 
     subpages.sort(key=lambda p: int(p["menu-position"]))
     if len(subpages) > 0:
-      print("<ul class='pure-menu-list'>")
+      print("<ol>")
       for sp in subpages:
-	substyle = "pure-menu-item subitem"
+        substyle = "pure-menu-item subitem"
         subtitle = hx(sp["subtitle"])
         if sp["subtitle"] == page.get("subtitle"):
 	  substyle += " selected"
         print(entry % (substyle, sp["url"], subtitle))
-      print("</ul>")
+      print("</ol>")
      %-->
 	</ul>
       </div>

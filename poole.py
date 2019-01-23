@@ -412,6 +412,8 @@ def serve(project, port):
         sys.exit(1)
 
     os.chdir(root)
+    
+    print("Serving blog at adress: http://localhost:{}".format(port))
     server = HTTPServer(('', port), SimpleHTTPRequestHandler)
     server.serve_forever()
 

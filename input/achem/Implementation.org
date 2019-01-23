@@ -2,7 +2,7 @@
 #+OPTIONS: toc:nil  
 
 
-title: ACHEM
+title: YAAC
 menu-position: 2
 type:subpage
 subtitle:implementation
@@ -216,21 +216,16 @@ des graphes arbitraires de réseaux de pétri.
      - être « réaliste »
      - être efficace
    
-**** TODO Molécules et réseaux de pétri
+**** Molécules et réseaux de pétri
      
      Dans le réacteur se trouvent un certain nombre de molécules 
      différentes, chacune ayant une quantité propre.
-
-     Afin d'être efficace, un unique réseau de pétri est créé
-     par type de molécule (pour plus de réalisme, on pourrait 
-     aller vers un nombre logarithmique).
      
-     Deux choix :
-      + calculer la quantité de réactions entre deux molécules
-	en fonction de la quantité de chacune des molécules
-      + creuser du coté de 
-	Generalized Stochastic simulation algorithm for Artificial Chemistry,
-	H. Soula
+     Les réactions sont implémentées suivant le modèle décrit dans le papier
+     
+     https://www.mitpressjournals.org/doi/pdf/10.1162/978-0-262-33936-0-ch094     
+     Generalized Stochastic simulation algorithm for Artificial Chemistry,
+     H. Soula
 	
      
 

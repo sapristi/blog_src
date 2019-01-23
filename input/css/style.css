@@ -88,3 +88,12 @@ pre {
     font-size: small;
     padding: 1em;
 }
+
+.row {
+    display: flex;
+}
+
+.column {
+    flex: 50%;
+    vertical-align:middle;
+}

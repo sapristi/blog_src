@@ -58,3 +58,7 @@ Projet d'implémentation d'une chimie artificielle basée sur des réseaux de P�
  * [Sources du projet](https://github.com/sapristi/alife)
  * [Working demo](http://artlife.ml:51461)
 
+
+# 4. Projet Easy_logging
+
+Librairie de logs pour Ocaml. [Full documentation](/easy_logging)

@@ -286,7 +286,7 @@ def build(project, opts):
     pages = []
     custom_converter = macros.get('converter', {})
 
-    for cwd, dirs, files in os.walk(dir_in.decode(opts.filename_enc)):
+    for cwd, dirs, files in os.walk(dir_in.decode(opts.filename_enc), followlinks=True):
         cwd_site = cwd[len(dir_in):].lstrip(os.path.sep)
         if not opts.dry_run:
             for sdir in dirs[:]:

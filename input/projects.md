@@ -61,4 +61,6 @@ Projet d'implémentation d'une chimie artificielle basée sur des réseaux de P�
 
 # 4. Projet Easy_logging
 
-Librairie de logs pour Ocaml. [Full documentation](/easy_logging/easy_logging)
+Librairie de logs pour Ocaml.
+ * [Documentation](/easy_logging/easy_logging)
+ * [Source](https://github.com/sapristi/easy_logging)

@@ -49,14 +49,14 @@ Projet Java 1.8 visant à implémenter une intelligence artificielle de groupe. 
 [Sources du projet](https://github.com/sapristi/bocal_java)
 
 
-# 3. Projet Yaacs
+# 3. Projet Yaac
 
 Projet d'implémentation d'une chimie artificielle basée sur des réseaux de Pétri étendus.
 
 ### Ressources
 
  * [Sources du projet](https://github.com/sapristi/alife)
- * [Working demo](http://artlife.ml:51461)
+ * [Working demo](http://yaac.mmill.eu)
 
 
 # 4. Projet Easy_logging
